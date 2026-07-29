@@ -2,6 +2,7 @@ services:
   - type: web
     name: staynJoy-backend
     runtime: java
+    branch: backend-yash
     buildCommand: cd Back-End/Back-End && chmod +x mvnw && ./mvnw clean package -DskipTests
     startCommand: java -jar Back-End/Back-End/target/Back-End-0.0.1-SNAPSHOT.jar --server.port=$PORT
     envVars:
@@ -14,4 +15,4 @@ services:
       - key: JWT_SECRET
         sync: false
       - key: ALLOWED_ORIGINS
-        value: https://staynjoy.scriptbliss.com
+        sync: false
