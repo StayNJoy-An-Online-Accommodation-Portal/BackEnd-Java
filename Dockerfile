@@ -1,7 +1,5 @@
-(
-echo FROM eclipse-temurin:21-jre
-echo WORKDIR /app
-echo COPY target/*.jar app.jar
-echo EXPOSE 8081
-echo ENTRYPOINT ["java", "-jar", "app.jar"]
-) > Dockerfile
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY target/*.jar app.jar
+EXPOSE 8081
+ENTRYPOINT ["java", "-jar", "app.jar"]
