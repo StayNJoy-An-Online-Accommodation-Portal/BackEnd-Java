@@ -13,19 +13,10 @@ import java.util.List;
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
 
-    // Fetch all properties with owner, images, and amenities in ONE single database trip
-    @Query("SELECT DISTINCT p FROM Property p " +
-           "LEFT JOIN FETCH p.owner " +
-           "LEFT JOIN FETCH p.images " +
-           "LEFT JOIN FETCH p.amenities")
+    @Query("SELECT DISTINCT p FROM Property p LEFT JOIN FETCH p.owner")
     List<Property> findAllWithDetails();
 
-    // Fetch approved properties with all relations in ONE query (eliminates the 43s lag on /approved)
-    @Query("SELECT DISTINCT p FROM Property p " +
-           "LEFT JOIN FETCH p.owner " +
-           "LEFT JOIN FETCH p.images " +
-           "LEFT JOIN FETCH p.amenities " +
-           "WHERE p.status = :status")
+    @Query("SELECT DISTINCT p FROM Property p LEFT JOIN FETCH p.owner WHERE p.status = :status")
     List<Property> findByStatusWithDetails(@Param("status") Property.PropertyStatus status);
 
     List<Property> findByStatus(Property.PropertyStatus status);
@@ -36,8 +27,6 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     @Query("SELECT DISTINCT p FROM Property p " +
            "LEFT JOIN FETCH p.owner " +
-           "LEFT JOIN FETCH p.images " +
-           "LEFT JOIN FETCH p.amenities " +
            "WHERE p.status = 'APPROVED' AND " +
            "(:location IS NULL OR LOWER(p.location) LIKE LOWER(CONCAT('%', :location, '%'))) AND " +
            "(:minPrice IS NULL OR p.pricePerNight >= :minPrice) AND " +
